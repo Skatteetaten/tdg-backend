@@ -1,0 +1,3 @@
+{
+  "spesifikasjon": "person {\n  fødselsnummer = \"26890296253\";\n\n  saldoRente {\n    inntektsår = 2024;\n\n    avsluttetKonto = false;\n    disponentFødselsnummer = \"26890296253\";\n    opplysningspliktigOrganisasjonsnummer = \"310527335\";\n\n    valutakode { USD };\n\n    innskudd { beløp = 250000 };\n\n    opptjenteRenter { beløp = 3500 };\n    påløpteRenter { beløp = 500 };\n    betalteMisligholdteRenter { beløp = 100 };\n    tilbakebetalteMisligholdteRenter { beløp = 200 };\n\n    skattepliktigGevinst { beløp = 1200 };\n\n    skattekontoEgnethet = 1;\n  }\n}"
+}

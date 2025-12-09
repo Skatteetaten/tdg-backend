@@ -1,0 +1,14 @@
+{
+  "docker": {
+    "maintainer": "Team RST",
+    "labels": {
+      "io.k8s.description": "Testdatagenerator backend",
+      "io.openshift.tags": "openshift,springboot"
+    }
+  },
+  "java": {
+    "mainClass": "no.skatteetaten.rst.testdatagenerator.TestdatageneratorApplication",
+    "jvmOpts": "-Dspring.profiles.active=openshift",
+    "applicationArgs": "--logging.config=${LOGBACK_FILE}"
+  }
+}

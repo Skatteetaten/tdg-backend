@@ -1,0 +1,44 @@
+---
+autoBumpEnabled: true
+
+# Kan deaktivere automatisk merging av dette prosjektet.
+autoMergeEnable: true
+
+# Enables om en ønsker at gradle wrapper også skal bumpes for dette prosjektet
+bumpGradleWrapper: true
+
+# Angir om parent skal bumpes, gjelder kun for Maven.
+bumpParent: true
+
+# Angir om man kan bumpe Major versjon. For gradle prosjekter må denne settes til true.
+allowMajorUpgrades: true
+pullRequestType: "ONE_PR"
+
+
+jira:
+    # Angir om Jira-issues skal lages ved bumping av dette prosjektet.
+    enabled: "true"
+    # Angir om parent for jira-issue.
+    parent: "RST-2236"
+
+    automerge:
+        #Angir status som jira-issue settes til ved auto-merge.
+        transitions:
+            - 'Til QA'
+            - 'Utvikling ferdig'
+            - 'Klar for produksjon'
+            - 'Lukk'
+        #Angir om resolution teksten skal settes, krever at sist status i transitions er status som tillater dette.
+        markResolution: true
+        resolution: "Utført"
+
+# Angir default reviewers dersom det er noen, hvis ikke blir listen med konfigurerte brukere brukt.
+defaultReviewersEnabled: true
+
+# Kan setts  true for å oppdatere allerde eksisterende autobump branches.
+updateExistingBranch: true
+
+
+# For Npm må node version settes
+node:
+    version: "18"

@@ -1,0 +1,14 @@
+spring:
+    application:
+        name: testdatagenerator
+    web:
+        error:
+            include-message: always
+
+---
+spring:
+    config:
+        activate:
+            on-profile: dev
+server:
+    port: 8081

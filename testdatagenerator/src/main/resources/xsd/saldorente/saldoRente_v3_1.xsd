@@ -1,0 +1,499 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="urn:ske:fastsetting:innsamling:saldoRente:v3"
+            targetNamespace="urn:ske:fastsetting:innsamling:saldoRente:v3" elementFormDefault="qualified"
+            attributeFormDefault="unqualified">
+
+  <xsd:element name="melding" type="Melding"/>
+
+  <xsd:complexType name="Melding">
+    <xsd:sequence>
+      <xsd:element name="leveranse" type="Leveranse" maxOccurs="unbounded"/>
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="Leveranse">
+    <xsd:sequence>
+      <xsd:element name="kildesystem" type="Kildesystem" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="oppgavegiver" type="Oppgavegiver"/>
+      <xsd:element name="inntektsaar" type="Inntektsaar"/>
+      <xsd:element name="oppgavegiversLeveranseReferanse" type="LeveranseReferanse" minOccurs="0"/>
+      <xsd:element name="leveransetype" type="Leveransetype" minOccurs="1"/>
+      <xsd:element name="presentasjonsnavn" type="Presentasjonsnavn" minOccurs="0"/>
+      <xsd:element name="oppgave" type="OppgaveSaldoRente" minOccurs="0" maxOccurs="unbounded"/>
+      <xsd:element name="sletteoppgave" type="SletteoppgaveSaldoRente" minOccurs="0" maxOccurs="unbounded"/>
+      <xsd:element name="oppgaveoppsummering" type="OppgaveoppsummeringSaldoRente"/>
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="Oppgavegiver">
+    <xsd:sequence>
+      <xsd:element name="organisasjonsnummer" type="Organisasjonsnummer"/>
+      <xsd:element name="organisasjonsnavn" type="Organisasjonsnavn"/>
+      <xsd:element name="internasjonalIdentifikator" type="InternasjonalIdentifikator" minOccurs="0"
+                   maxOccurs="unbounded"/>
+      <xsd:element name="kontaktinformasjon" type="Kontaktinformasjon" minOccurs="0"/>
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="Kontaktinformasjon">
+    <xsd:sequence>
+      <xsd:element name="navn" type="Navn" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="telefonnummer" type="Telefonnummer" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="varselEpostadresse" type="Epostadresse" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="varselSmsMobilnummer" type="Telefonnummer" minOccurs="0" maxOccurs="1"/>
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="OppgaveSaldoRente">
+    <xsd:sequence>
+      <!-- Kontoeier -->
+      <xsd:element name="oppgaveeier" type="Oppgaveeier"/>
+      <!-- Konto -->
+      <xsd:element name="kontonummer" type="Kontonummer"/>
+      <xsd:element name="avsluttetKonto" type="Boolsk" minOccurs="0"/>
+      <xsd:element name="udokumentertKonto" type="Boolsk" minOccurs="0"/>
+      <xsd:element name="skattekontoEgnethet" type="SkattekontoEgnethet" minOccurs="0"/>
+      <!-- Innskudd/utlån og avkastning/renter -->
+      <xsd:element name="utlaan" type="Beloep" minOccurs="0"/>
+      <xsd:element name="innskudd" type="Beloep" minOccurs="0"/>
+      <xsd:element name="renter" type="Renter"/>
+      <!-- Valutakode for valutakonto/-lån -->
+      <xsd:element name="kontotype" type="Kontotype" minOccurs="0"/>
+      <xsd:element name="valutakode" type="Valutakode" minOccurs="0"/>
+      <xsd:element name="gevinstEllerTap" type="GevinstEllerTap" minOccurs="0"/>
+      <xsd:element name="innskuddIAnnenValuta" type="Beloep" minOccurs="0"/>
+      <xsd:element name="renteinntektIAnnenValuta" type="Beloep" minOccurs="0"/>
+      <!-- Disponent -->
+      <xsd:element name="disponent" type="Disponent" minOccurs="0" maxOccurs="unbounded"/>
+      <!-- Medlåntaker -->
+      <xsd:element name="medlaantaker" type="Medlaantaker" minOccurs="0" maxOccurs="unbounded"/>
+      <!-- Spesialfelter for internasjonal rapportering på CRS og FATCA -->
+      <xsd:element name="reellRettighetshaver" type="ReellRettighetshaver" minOccurs="0" maxOccurs="unbounded"/>
+      <xsd:element name="inneholderInternasjonalRapportering" type="Boolsk" minOccurs="0"/>
+      <xsd:element name="opphoerssaldoForFatca" type="Beloep" minOccurs="0"/>
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="Oppgaveeier">
+    <xsd:sequence>
+      <xsd:choice>
+        <xsd:sequence>
+          <xsd:element name="organisasjonsnummer" type="Organisasjonsnummer"/>
+          <xsd:element name="organisasjonsnavn" type="Organisasjonsnavn"/>
+        </xsd:sequence>
+        <xsd:sequence>
+          <xsd:element name="foedselsnummer" type="Foedselsnummer"/>
+          <xsd:element name="bostedsland" type="Landkode" minOccurs="0" maxOccurs="unbounded"/>
+          <xsd:element name="fornavn" type="Navn"/>
+          <xsd:element name="mellomnavn" type="Navn" minOccurs="0"/>
+          <xsd:element name="etternavn" type="Etternavn"/>
+          <xsd:element name="foedselsdato" type="Foedselsdato" minOccurs="0"/>
+        </xsd:sequence>
+      </xsd:choice>
+      <!-- Alternativ identfiikator for kontoeeiere som ikke har fødselsnummer/organisasjonsnummer -->
+      <xsd:element name="alternativIdentifikator" type="AlternativIdentifikator" minOccurs="0"/>
+      <xsd:element name="internasjonalIdentifikator" type="InternasjonalIdentifikator" minOccurs="0"
+                   maxOccurs="unbounded"/>
+      <xsd:element name="adresse" type="InternasjonalAdresse" minOccurs="0" maxOccurs="unbounded"/>
+      <xsd:element name="sektorkode" type="Sektorkode" minOccurs="0"/>
+      <!-- Merking av kontoeeier for utveksling på CRS og FATCA -->
+      <xsd:element name="internasjonalRapportering" type="InternasjonalRapporteringKontohaver" minOccurs="0"
+                   maxOccurs="unbounded"/>
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="SletteoppgaveSaldoRente">
+    <xsd:sequence>
+      <xsd:choice>
+        <xsd:element name="oppgaveeierOrganisasjonsnummer" type="Organisasjonsnummer"/>
+        <xsd:element name="oppgaveeierFoedselsnummer" type="Foedselsnummer"/>
+      </xsd:choice>
+      <xsd:element name="oppgaveeierAlternativIdentifikator" type="AlternativIdentifikator" minOccurs="0"/>
+      <xsd:element name="kontonummer" type="Kontonummer"/>
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="Renter">
+    <xsd:sequence>
+      <xsd:element name="opptjenteRenter" type="Beloep" minOccurs="0"/>
+      <xsd:element name="paaloepteRenter" type="Beloep" minOccurs="0"/>
+      <xsd:element name="betalteMisligholdteRenter" type="Beloep" minOccurs="0"/>
+      <xsd:element name="tilbakebetalteMisligholdteRenter" type="Beloep" minOccurs="0"/>
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="InternasjonalIdentfikator">
+    <xsd:sequence>
+      <xsd:element name="identifikator" type="Identifikator" minOccurs="1"/>
+      <xsd:element name="identifikatortype" type="Identfikatortype" minOccurs="1"/>
+      <xsd:element name="utstedtAvLand" type="Landkode" minOccurs="1"/>
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="OppgaveoppsummeringSaldoRente">
+    <xsd:sequence>
+      <xsd:element name="antallOppgaver" type="Antall"/>
+      <xsd:element name="sumInnskudd" type="Beloep"/>
+      <xsd:element name="sumUtlaan" type="Beloep"/>
+      <xsd:element name="sumOpptjenteRenter" type="Beloep"/>
+      <xsd:element name="sumPaaloepteRenter" type="Beloep"/>
+      <xsd:element name="sumBetalteMisligholdteRenter" type="Beloep"/>
+      <xsd:element name="sumTilbakebetalteMisligholdteRenter" type="Beloep"/>
+      <xsd:element name="sumSkattepliktigGevinst" type="Beloep"/>
+      <xsd:element name="sumFradragsberettigetTap" type="Beloep"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="InternasjonalIdentifikator">
+    <xsd:sequence>
+      <xsd:element name="identifikator" type="InternasjonalIdentifikatorverdi"/>
+      <xsd:element name="identifikatortype" type="InternasjonalIdentifikatortype"/>
+      <xsd:element name="utstedtAvLand" type="Landkode"/>
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="InternasjonalAdresseStrukturert">
+    <xsd:sequence>
+      <xsd:element name="adressenavn" type="AdresseFelt" minOccurs="0"/>
+      <xsd:element name="adressenummer" type="AdresseFelt" minOccurs="0"/>
+      <xsd:element name="bygning" type="AdresseFelt" minOccurs="0"/>
+      <xsd:element name="boenhet" type="AdresseFelt" minOccurs="0"/>
+      <xsd:element name="etasje" type="AdresseFelt" minOccurs="0"/>
+      <xsd:element name="distriktsnavn" type="Adressetekst" minOccurs="0"/>
+      <xsd:element name="postboks" type="AdresseFelt" minOccurs="0"/>
+      <xsd:element name="postkode" type="AdresseFelt" minOccurs="0"/>
+      <xsd:element name="byEllerStedsnavn" type="AdresseFelt"/>
+      <xsd:element name="administrativEnhet" type="AdresseFelt" minOccurs="0"/>
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="InternasjonalAdresse">
+    <xsd:sequence>
+      <xsd:element name="landkode" type="Landkode"/>
+      <xsd:choice>
+        <xsd:sequence>
+          <xsd:element name="adresseStrukturert" type="InternasjonalAdresseStrukturert"/>
+          <xsd:element name="adresseTekstForUtskrift" type="Adressetekst" minOccurs="0"/>
+        </xsd:sequence>
+        <xsd:element name="adresseTekst" type="Adressetekst"/>
+      </xsd:choice>
+      <xsd:element name="adresseBrukstype" type="AdresseBrukstype" minOccurs="0"/>
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="InternasjonalRapporteringKontohaver">
+    <xsd:sequence>
+      <xsd:element name="rapporteringstype" type="InternasjonalRapporteringstype"/>
+      <xsd:element name="kontohavertype" type="KontohavertypeForInternasjonalRapportering" minOccurs="0"/>
+      <xsd:element name="mottakerland" type="Landkode" maxOccurs="unbounded"/>
+    </xsd:sequence>
+  </xsd:complexType>
+
+
+  <xsd:complexType name="InternasjonalRapporteringRettighetshaver">
+    <xsd:sequence>
+      <xsd:element name="rapporteringstype" type="InternasjonalRapporteringstype"/>
+      <xsd:element name="rettighetshavertype" type="RettighetshavertypeForInternasjonalRapportering" minOccurs="0"/>
+      <xsd:element name="mottakerland" type="Landkode" maxOccurs="unbounded"/>
+    </xsd:sequence>
+  </xsd:complexType>
+
+
+  <xsd:complexType name="GevinstEllerTap">
+    <xsd:choice>
+      <xsd:element name="skattepliktigGevinst" type="Beloep"/>
+      <xsd:element name="fradragsberettigetTap" type="Beloep"/>
+    </xsd:choice>
+  </xsd:complexType>
+
+  <xsd:complexType name="Disponent">
+    <xsd:sequence>
+      <xsd:choice>
+        <xsd:sequence>
+          <xsd:element name="organisasjonsnummer" type="Organisasjonsnummer"/>
+          <xsd:element name="organisasjonsnavn" type="Organisasjonsnavn"/>
+        </xsd:sequence>
+        <xsd:sequence>
+          <xsd:element name="foedselsnummer" type="Foedselsnummer"/>
+          <xsd:element name="bostedsland" type="Landkode" minOccurs="0" maxOccurs="unbounded"/>
+          <xsd:element name="fornavn" type="Navn"/>
+          <xsd:element name="mellomnavn" type="Navn" minOccurs="0"/>
+          <xsd:element name="etternavn" type="Etternavn"/>
+          <xsd:element name="foedselsdato" type="Foedselsdato" minOccurs="0"/>
+        </xsd:sequence>
+      </xsd:choice>
+      <xsd:element name="internasjonalIdentifikator" type="InternasjonalIdentifikator" minOccurs="0"
+                   maxOccurs="unbounded"/>
+      <xsd:element name="adresse" type="InternasjonalAdresse" minOccurs="0" maxOccurs="unbounded"/>
+      <xsd:element name="internasjonalRapportering" type="InternasjonalRapporteringKontohaver" minOccurs="0"
+                   maxOccurs="unbounded"/>
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="Medlaantaker">
+    <xsd:sequence>
+      <xsd:choice>
+        <xsd:element name="organisasjonsnummer" type="Organisasjonsnummer"/>
+        <xsd:element name="foedselsnummer" type="Foedselsnummer"/>
+      </xsd:choice>
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="ReellRettighetshaver">
+    <xsd:sequence>
+      <xsd:choice>
+        <xsd:sequence>
+          <xsd:element name="organisasjonsnummer" type="Organisasjonsnummer"/>
+          <xsd:element name="organisasjonsnavn" type="Organisasjonsnavn"/>
+        </xsd:sequence>
+        <xsd:sequence>
+          <xsd:element name="foedselsnummer" type="Foedselsnummer"/>
+          <xsd:element name="bostedsland" type="Landkode" minOccurs="0" maxOccurs="unbounded"/>
+          <xsd:element name="fornavn" type="Navn"/>
+          <xsd:element name="mellomnavn" type="Navn" minOccurs="0"/>
+          <xsd:element name="etternavn" type="Navn"/>
+          <xsd:element name="foedselsdato" type="Foedselsdato" minOccurs="0"/>
+        </xsd:sequence>
+      </xsd:choice>
+      <xsd:element name="internasjonalIdentifikator" type="InternasjonalIdentifikator" minOccurs="0"
+                   maxOccurs="unbounded"/>
+      <xsd:element name="adresse" type="InternasjonalAdresse" minOccurs="0" maxOccurs="unbounded"/>
+      <xsd:element name="internasjonalRapportering" type="InternasjonalRapporteringRettighetshaver" minOccurs="0"
+                   maxOccurs="unbounded"/>
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:simpleType name="AdresseBrukstype">
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="bostedEllerVirksomhet"/>
+      <xsd:enumeration value="bosted"/>
+      <xsd:enumeration value="virksomhet"/>
+      <xsd:enumeration value="forretningsadresse"/>
+      <xsd:enumeration value="ukjent"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="Adressetekst">
+    <xsd:restriction base="xsd:string">
+      <xsd:maxLength value="200"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="AdresseFelt">
+    <xsd:restriction base="xsd:string">
+      <xsd:maxLength value="200"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="AlternativIdentifikator">
+    <xsd:restriction base="xsd:string">
+      <xsd:maxLength value="100"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="Antall">
+    <xsd:restriction base="xsd:integer">
+      <xsd:minInclusive value="0"/>
+      <xsd:maxInclusive value="999999999999"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="Boolsk">
+    <xsd:restriction base="xsd:boolean"/>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="Beloep">
+    <xsd:restriction base="xsd:integer">
+      <xsd:minInclusive value="0"/>
+      <xsd:maxInclusive value="999999999999"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="Epostadresse">
+    <xsd:restriction base="xsd:string">
+      <xsd:maxLength value="254"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="Etternavn">
+    <xsd:restriction base="xsd:string">
+      <xsd:minLength value="1"/>
+      <xsd:maxLength value="100"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="Foedselsdato">
+    <xsd:restriction base="xsd:date"/>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="Foedselsnummer">
+    <xsd:restriction base="xsd:string">
+      <xsd:length value="11"/>
+      <xsd:pattern value="[0-9]+"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="Identifikator">
+    <xsd:restriction base="xsd:string">
+      <xsd:minLength value="1"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="Identfikatortype">
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="TIN"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="Inntektsaar">
+    <xsd:restriction base="xsd:string">
+      <xsd:length value="4"/>
+      <xsd:pattern value="[0-9]+"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="InternasjonalIdentifikatorverdi">
+    <xsd:restriction base="xsd:string">
+      <xsd:maxLength value="100"/>
+      <xsd:minLength value="1"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="InternasjonalIdentifikatortype">
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="GIIN"/>
+      <xsd:enumeration value="TIN"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="InternasjonalRapporteringstype">
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="FATCA"/>
+      <xsd:enumeration value="CRS"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="Kildesystem">
+    <xsd:restriction base="xsd:string">
+      <xsd:maxLength value="100"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="KontohavertypeForInternasjonalRapportering">
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="FATCA102"/>
+      <xsd:enumeration value="FATCA103"/>
+      <xsd:enumeration value="FATCA104"/>
+      <xsd:enumeration value="CRS101"/>
+      <xsd:enumeration value="CRS102"/>
+      <xsd:enumeration value="CRS103"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="Kontotype">
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="innskuddskontoINok"/>
+      <xsd:enumeration value="innskuddskontoIUtenlandskValuta"/>
+      <xsd:enumeration value="laanekontoINok"/>
+      <xsd:enumeration value="laanekontoIUtenlandskValuta"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="Kontonummer">
+    <xsd:restriction base="xsd:string">
+      <xsd:minLength value="1"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="Landkode">
+    <xsd:restriction base="xsd:string">
+      <xsd:pattern value="([A-Z]){2}"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="Leveransetype">
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="ordinaer"/>
+      <xsd:enumeration value="ingenoppgaver"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="LeveranseReferanse">
+    <xsd:restriction base="xsd:string">
+      <xsd:maxLength value="100"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="Navn">
+    <xsd:restriction base="xsd:string">
+      <xsd:maxLength value="100"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="Organisasjonsnavn">
+    <xsd:restriction base="xsd:string">
+      <xsd:minLength value="1"/>
+      <xsd:maxLength value="100"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="Organisasjonsnummer">
+    <xsd:restriction base="xsd:string">
+      <xsd:length value="9"/>
+      <xsd:pattern value="[0-9]+"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="Presentasjonsnavn">
+    <xsd:restriction base="xsd:string">
+      <xsd:maxLength value="50"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="RettighetshavertypeForInternasjonalRapportering">
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="CRS801"/>
+      <xsd:enumeration value="CRS802"/>
+      <xsd:enumeration value="CRS803"/>
+      <xsd:enumeration value="CRS804"/>
+      <xsd:enumeration value="CRS805"/>
+      <xsd:enumeration value="CRS806"/>
+      <xsd:enumeration value="CRS807"/>
+      <xsd:enumeration value="CRS808"/>
+      <xsd:enumeration value="CRS809"/>
+      <xsd:enumeration value="CRS810"/>
+      <xsd:enumeration value="CRS811"/>
+      <xsd:enumeration value="CRS812"/>
+      <xsd:enumeration value="CRS813"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="Sektorkode">
+    <xsd:restriction base="xsd:string">
+      <xsd:maxLength value="5"/>
+      <xsd:minLength value="4"/>
+      <xsd:pattern value="[0-9]+"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="SkattekontoEgnethet">
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="0"/>
+      <xsd:enumeration value="1"/>
+      <xsd:enumeration value="2"/>
+      <xsd:enumeration value="3"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="Telefonnummer">
+    <xsd:restriction base="xsd:string">
+      <xsd:maxLength value="20"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="Valutakode">
+    <xsd:restriction base="xsd:string">
+      <xsd:pattern value="([A-Z]){3}"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+
+</xsd:schema>

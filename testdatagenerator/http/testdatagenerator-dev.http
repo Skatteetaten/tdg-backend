@@ -1,0 +1,113 @@
+###
+# @name Minimal Saldo Rente oppgave for person med fødselsnummer
+# @no-log
+POST http://localhost:8081/api/dokumenter/tdss
+Content-Type: application/json
+
+{
+    "spesifikasjon": "person { fødselsnummer = \"26890296253\" ; saldoRente { inntektsår = 2024 ; innskudd { beløp = 2000 } } }"
+}
+
+> {%
+    client.global.set("korrelasjonsId", response.body);
+%}
+
+###
+# @name Minimal Saldo Rente oppgave for person uten fødselsnummer
+# @no-log
+POST http://localhost:8081/api/dokumenter/tdss
+Content-Type: application/json
+
+{
+  "spesifikasjon": "person { saldoRente { inntektsår = 2024 ; innskudd { beløp = 2000 } } }"
+}
+
+> {%
+  client.global.set("korrelasjonsId", response.body);
+%}
+
+###
+# @name Minimal Saldo Rente oppgave for enhet
+# @no-log
+POST http://localhost:8081/api/dokumenter/tdss
+Content-Type: application/json
+
+{
+  "spesifikasjon": "enhet { organisasjonsnummer = \"315403618\" ; saldoRente { inntektsår = 2024 ; innskudd { beløp = 2000 } } }"
+}
+
+> {%
+  client.global.set("korrelasjonsId", response.body);
+%}
+
+###
+# @name Hent Saldo Rente oppgave med gitt Id
+GET http://localhost:8081/api/dokumenter/5862de86-3c90-4d54-ac6a-5c53f2fed0f3
+
+###
+# @name Hent Saldo Rente oppgave fra siste kall
+GET http://localhost:8081/api/dokumenter/{{korrelasjonsId}}
+
+###
+# @name Hent Saldo Rente oppgave fra siste kall, med formatert XML. Gå til "Response Handler" fane for å se innhold.
+GET http://localhost:8081/api/dokumenter/{{korrelasjonsId}}
+
+> {%
+  client.log(response.body[0].dokument);
+%}
+
+###
+# @name Saldo Rente oppgave for person med fødselsnummer og skattePliktGevinst
+# @no-log
+POST http://localhost:8081/api/dokumenter/tdss
+Content-Type: application/json
+
+{
+  "spesifikasjon": "person { fødselsnummer = \"26890296253\" ; saldoRente { inntektsår = 2024 ; innskudd { beløp = 2000 } ; skattepliktigGevinst { beløp = 1000 } } }"
+}
+
+> {%
+  client.global.set("korrelasjonsId", response.body);
+%}
+
+###
+# @name Stor Saldo Rente oppgave for person med fødselsnummer. Hent spesifikasjon fra fil.
+# @no-log
+POST http://localhost:8081/api/dokumenter/tdss
+Content-Type: application/json
+
+< ./stor_spesifikasjon_1.json
+
+> {%
+  client.global.set("korrelasjonsId", response.body);
+%}
+
+###
+# @name Minste Saldo Rente oppgave for person
+# @no-log
+POST http://localhost:8081/api/dokumenter/tdss
+Content-Type: application/json
+
+{
+  "spesifikasjon": "person { saldoRente { inntektsår = 2024 ; avsluttetKonto = true } }"
+}
+
+> {%
+  client.global.set("korrelasjonsId", response.body);
+%}
+
+###
+# @name Saldo Rente oppgave for person med disponent
+# @no-log
+POST http://localhost:8081/api/dokumenter/tdss
+Content-Type: application/json
+
+{
+  "spesifikasjon": "person { saldoRente { inntektsår = 2024 ; disponentFødselsnummer = \"26890296253\" ; avsluttetKonto = true } }"
+}
+
+> {%
+  client.global.set("korrelasjonsId", response.body);
+%}
+
+###
