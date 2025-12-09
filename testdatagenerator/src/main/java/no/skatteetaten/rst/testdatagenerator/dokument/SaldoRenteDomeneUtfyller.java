@@ -27,7 +27,6 @@ import no.skatteetaten.saldorente.Oppgavegiver;
  * Utfyller SaldoRente-domenemodellen med manglende verdier og kobler den mot data fra Tenor.
  * Klassen sørger for at alle obligatoriske felter er satt før dokumentgenerering.
  */
-@SuppressWarnings({ "checkstyle:MagicNumber" })
 @Component
 @RequiredArgsConstructor
 public class SaldoRenteDomeneUtfyller {

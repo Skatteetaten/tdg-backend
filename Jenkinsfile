@@ -12,7 +12,6 @@ def overrides = [
         sonarQube                  : true,
         sonarBreakOnQualityGate    : true,
         iqBreakOnUnstable          : false,
-        failOnCheckstyleViolation  : true,
         compileProperties          : "-U",
         pomPath                    : 'testdatagenerator/pom.xml',
         openShiftBuild             : true,

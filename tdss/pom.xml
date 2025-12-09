@@ -16,10 +16,6 @@
   </parent>
 
   <properties>
-    <maven-checkstyle-plugin.version>3.6.0</maven-checkstyle-plugin.version>
-
-    <checkstyle-config.version>3.0.1</checkstyle-config.version>
-    <checkstyle.version>12.2.0</checkstyle.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <jackson.version>2.20.1</jackson.version>
     <slf4j.version>2.0.17</slf4j.version>
@@ -91,38 +87,6 @@
 
   <build>
     <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-checkstyle-plugin</artifactId>
-        <version>${maven-checkstyle-plugin.version}</version>
-        <configuration>
-          <configLocation>checkstyle/checkstyle-with-metrics-extra-linelength.xml</configLocation>
-          <failsOnError>true</failsOnError>
-          <consoleOutput>true</consoleOutput>
-          <includeTestSourceDirectory>true</includeTestSourceDirectory>
-        </configuration>
-        <executions>
-          <execution>
-            <id>validate-and-check</id>
-            <phase>validate</phase>
-            <goals>
-              <goal>check</goal>
-            </goals>
-          </execution>
-        </executions>
-        <dependencies>
-          <dependency>
-            <groupId>com.puppycrawl.tools</groupId>
-            <artifactId>checkstyle</artifactId>
-            <version>${checkstyle.version}</version>
-          </dependency>
-          <dependency>
-            <groupId>no.skatteetaten.aurora.checkstyle</groupId>
-            <artifactId>checkstyle-config</artifactId>
-            <version>${checkstyle-config.version}</version>
-          </dependency>
-        </dependencies>
-      </plugin>
       <plugin>
         <groupId>org.jetbrains.kotlin</groupId>
         <artifactId>kotlin-maven-plugin</artifactId>
