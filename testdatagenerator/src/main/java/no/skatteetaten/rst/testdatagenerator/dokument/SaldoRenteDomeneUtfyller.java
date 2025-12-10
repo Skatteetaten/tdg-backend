@@ -35,8 +35,8 @@ public class SaldoRenteDomeneUtfyller {
     /**
      * Fyller ut alle påkrevde felter i en {@link Part} før dokumentgenerering.
      *
-     * @param part
-     * @return
+     * @param part Domenemodell som inneholder SaldoRente-spesifikasjoner.
+     * @return Oppgaveeier (person eller enhet) som skal knyttes til oppgaven.
      */
     public Oppgaveeier fyllUtPart(Part part) {
         if (part.getSkattedata().getSaldoRenter().isEmpty()) {
@@ -78,8 +78,8 @@ public class SaldoRenteDomeneUtfyller {
      * Dersom brukeren har oppgitt et opplysningspliktigOrganisasjonsnummer, forsøkes dette slått opp i Tenor.
      * Hvis ikke så hentes en tilfeldig gyldig enhet fra Tenor.
      *
-     * @param saldoRente
-     * @return
+     * @param saldoRente Domenemodellen for {@link SaldoRente} som inneholder brukerens spesifikasjoner.
+     * @return Oppgavegiver (enhet) som står for innsending av oppgaven.
      */
     public Oppgavegiver fyllUtOppgavegiver(SaldoRente saldoRente) {
         TenorPart tenorPart = saldoRente.getOpplysningspliktigOrganisasjonsnummer().isEmpty()

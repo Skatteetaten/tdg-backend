@@ -58,7 +58,7 @@ En av styrkene til *tdg-backend* er at dataen som genereres er konsistente med s
 *TDSS* er et Kotlin-basert Domain Specific Language (DSL) som er utviklet for å beskrive syntetiske testdata på en enkel og deklarativ måte.
 Modulen inneholder:
 
-- Annotasjoner: `@TdssInput` er en del av DSL-definisjonen og markerer hvilke felter i domenemodellen som er tilgjengelige for brukeren i TDSS. 
+- Annotasjoner: `@TdssInput` er en del av DSL-definisjonen og markerer hvilke felter i domenemodellen som er tilgjengelige for brukeren i TDSS.
   Bare felter med denne annotasjonen kan settes i spesifikasjonen.
 - Parsing: konverterer TDSS-strenger til objektstruktur.
 - Intern validering: Regler som sjekker logiske brister (f.eks. at "beløp" ikke er negativt, eller at datoer er i riktig rekkefølge) før man forsøker å generere data.
@@ -69,11 +69,11 @@ Dette er selve Spring Boot-applikasjonen som syr sammen prosessen:
 
 1) Kontroller: `DokumentController` tar imot forespørselen, og angir en korrelasjonsId knyttet til dokumentet.
 2) Service: `DokumentService` tar imot spesifikasjonen, konverter TDSS til `Part`, genererer XML-dokumentet og lagrer det i et *map*-objekt hvor nøkkelen er korrelasjonsId.
-3) Tenor Klient: For å skape realistiske testdata benytter applikasjonen en mock av systemet Tenor. Her hentes gyldige, syntetiske fødselsnummer/organisasjonsnummer og navn 
+3) Tenor Klient: For å skape realistiske testdata benytter applikasjonen en mock av systemet Tenor. Her hentes gyldige, syntetiske fødselsnummer/organisasjonsnummer og navn
    som samsvarer med kravene i spesifikasjonen.
-4) Domeneutfyller: Dette er en sentral komponent som fyller "hullene" i spesifikasjonen. Dersom brukeren kun ber om "en person med renteinntekter", 
+4) Domeneutfyller: Dette er en sentral komponent som fyller "hullene" i spesifikasjonen. Dersom brukeren kun ber om "en person med renteinntekter",
    vil domeneutfylleren automatisk generere obligatoriske felter som mangler basert på tilfeldige men gyldige verdier.
-5) XSD og JAXB: Prosjektet bruker jaxb2-maven-plugin for å generere Java-klasser automatisk fra de offisielle XSD-skjemaene for skattemeldinger. 
+5) XSD og JAXB: Prosjektet bruker jaxb2-maven-plugin for å generere Java-klasser automatisk fra de offisielle XSD-skjemaene for skattemeldinger.
    Data fra domeneutfylleren mappes over i disse genererte klassene før de marshalles til XML.
 
 
@@ -158,20 +158,21 @@ Det må [søkes om tilgang](https://skatteetaten.github.io/testnorge-tenor-dokum
 ## Oppstart
 
 *tdg-backend* kjører på port `8081` når den kjører på *dev* profil. Dette er for å unngå portkonflikt med *tdg-kotlin-compiler-server*.
+Den bruker også [TenorKlientMock](testdatagenerator/src/main/java/no/skatteetaten/rst/testdatagenerator/tenor/TenorKlientMock.java) som Tenor-klient,
+så *tdg-backend* kan testes uten å ha en integrasjon mot *Tenor*.
 
 ### Kjøre *tdg-backend* med Maven
 
-1) Genererer nødvendige klasser
+1) Generer nødvendige klasser
 
 ```shell
 mvn clean install
 ```
 
-2) Bytt mappe til `/testdatagenerator` og kjør backend'en.
+2) Kjør *testdatagenerator* i enten *dev* eller *prod* profil.
 
 ```shell
-cd testdatagenerator
-mvn spring-boot:run
+mvn -pl testdatagenerator spring-boot:run -Dspring-boot.run.profiles=dev
 ```
 
 ### Testing uten frontend
@@ -199,6 +200,7 @@ curl -X GET "http://localhost:8081/api/dokumenter/${korrelasjonsId}" | jq -r '.[
 #### IntelliJ HTTP-Syntaks
 
 [**testdatagenerator-dev.http**](testdatagenerator/http/testdatagenerator-dev.http) kan brukes til å teste ut *testdatagenerator* ved hjelp av *IntelliJ* sin HTTP-syntaks.
+Husk å velge riktig environment.
 
 ### Testing med Swagger
 
@@ -217,7 +219,4 @@ curl -X GET "http://localhost:8081/api/dokumenter/${korrelasjonsId}" | jq -r '.[
 | **Person**         | En *person* kan spesifiseres med fødselsnummer. Navnet hentes fra Tenor før det brukes i XML-dokumentet som genereres.                                                                                             |
 | **Enhet**          | En *enhet* er en registrert næringsdrivende virksomhet. En enhet kan være et enkeltmannsforetak, et aksjeselskap eller et ansvarlig selskap.                                                                       |
 | **Domeneutfyller** | Logikklag i backend. Hvis brukeren kun spesifiserer et fåtall felter (f.eks. kun beløp), vil domeneutfylleren sørge for at resten av datamodellen fylles med gyldige, tilfeldige verdier slik at XML-en validerer. |
-
-
-## [Tilbake til Skatteetaten sin hjemmeside](https://www.skatteetaten.no/)
 
